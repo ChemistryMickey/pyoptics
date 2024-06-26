@@ -35,8 +35,10 @@ def test_free_prop():
     print(f"{ray = }")
 
     (ray.tail_position[1], ray.th) = free_prop.refract_ray(ray)
+    ray.tail_position[2] += free_prop.d
     print(f"{ray = }")
     assert ray.tail_position[1] == 2
+    assert ray.tail_position[2] == free_prop.d
 
 
 def test_curved_mirror():
