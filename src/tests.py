@@ -111,3 +111,35 @@ def test_thick_lens():
     print(f"{ray = }")
 
     assert round(ray.th, 3) == -0.333
+
+    thick_lens4 = ThickLens(
+        left_index=1,
+        left_radius=2,
+        right_index=1,
+        right_radius=1,
+        n=1.5,
+        thickness=2,
+    )  # thicker
+    ray = Ray(np.array([0, 1, 0]))
+    print(f"{ray = }")
+
+    (ray.tail_position[1], ray.th) = thick_lens4.refract_ray(ray)
+    print(f"{ray = }")
+
+    assert round(ray.th, 3) == 0.083
+
+    thick_lens5 = ThickLens(
+        left_index=1,
+        left_radius=2,
+        right_index=1,
+        right_radius=3,
+        n=1.5,
+        thickness=2,
+    )  # thicker
+    ray = Ray(np.array([0, 1, 0]))
+    print(f"{ray = }")
+
+    (ray.tail_position[1], ray.th) = thick_lens5.refract_ray(ray)
+    print(f"{ray = }")
+
+    assert round(ray.th, 3) == -0.139
