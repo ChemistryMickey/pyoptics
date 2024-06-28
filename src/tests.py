@@ -145,3 +145,17 @@ def test_optical_system():
     opt_sys.refract_ray(ray)
     assert round(ray.th, 3) == -1.0
     assert ray.tail_position[2] == 7
+
+    # Empty case
+    try:
+        opt_sys = OpticalSystem([])
+        raise Exception("Should have errored")
+    except:
+        pass
+
+    # Check optical properties
+    assert opt_sys.focal_length == 1
+
+    ray2 = Ray(np.array([0, 1, 0]))
+    refracted = np.matmul(opt_sys.M, np.array([ray2.tail_position[1], ray2.th]))
+    assert (refracted == np.array([ray.tail_position[1], ray.th])).all()
