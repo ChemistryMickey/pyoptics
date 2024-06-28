@@ -2,7 +2,7 @@ import numpy as np
 
 
 class Ray:
-    tail_position: np.ndarray = np.zeros((3, 1))
+    pos: np.ndarray = np.zeros((3, 1))
     mag: float = 1
     th: float = 0
     ph: float = 0
@@ -14,10 +14,10 @@ class Ray:
         th: float = 0,  # [rad] angle about the x-axis
         ph: float = 0,  # [rad] angle about the y-axis
     ):
-        self.tail_position = pos
+        self.pos = pos
         self.mag = mag
         self.th = th
         self.ph = ph
 
     def __repr__(self):
-        return f"[{self.tail_position}; [{self.th}, {self.ph}]]"
+        return f"[{self.pos}; [{self.th}, {self.ph}]]"

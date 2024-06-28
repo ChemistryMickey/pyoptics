@@ -23,9 +23,7 @@ class OpticalElement:
     def refract_ray(self, ray: Ray) -> None:
         # WARNING: Mutates ray
 
-        (ray.tail_position[1], ray.th) = np.matmul(
-            self.M, np.array([ray.tail_position[1], ray.th])
-        )
+        (ray.pos[1], ray.th) = np.matmul(self.M, np.array([ray.pos[1], ray.th]))
 
     def get_focal_length(self):
         return -1 / self.M[1, 0]
@@ -60,7 +58,7 @@ class FreePropagation(OpticalElement):
 
     def refract_ray(self, ray: Ray) -> None:
         super().refract_ray(ray)
-        ray.tail_position[2] += self.d
+        ray.pos[2] += self.d
 
     def __repr__(self):
         return str(super().__repr__()) + f", dist: {self.d}"

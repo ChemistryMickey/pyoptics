@@ -25,7 +25,7 @@ def test_optical_element():
 
     free_prop.refract_ray(ray)
 
-    assert ray.tail_position[1] == 2
+    assert ray.pos[1] == 2
 
 
 def test_free_prop():
@@ -34,8 +34,8 @@ def test_free_prop():
 
     free_prop.refract_ray(ray)
 
-    assert ray.tail_position[1] == 2
-    assert ray.tail_position[2] == free_prop.d
+    assert ray.pos[1] == 2
+    assert ray.pos[2] == free_prop.d
 
 
 def test_curved_mirror():
@@ -144,7 +144,7 @@ def test_optical_system():
 
     opt_sys.refract_ray(ray)
     assert round(ray.th, 3) == -1.0
-    assert ray.tail_position[2] == 7
+    assert ray.pos[2] == 7
 
     # Empty case
     try:
@@ -157,5 +157,5 @@ def test_optical_system():
     assert opt_sys.focal_length == 1
 
     ray2 = Ray(np.array([0, 1, 0]))
-    refracted = np.matmul(opt_sys.M, np.array([ray2.tail_position[1], ray2.th]))
-    assert (refracted == np.array([ray.tail_position[1], ray.th])).all()
+    refracted = np.matmul(opt_sys.M, np.array([ray2.pos[1], ray2.th]))
+    assert (refracted == np.array([ray.pos[1], ray.th])).all()
