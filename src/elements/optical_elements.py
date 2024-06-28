@@ -11,21 +11,27 @@ class OpticalElement:
         thickness: float = 0,
         spherical_ab: np.ndarray = np.ones((2, 2)),
         chromatic_ab: np.ndarray = np.ones((2, 2)),
+        pos: np.ndarray = np.ones((3, 1)),
     ):
         self.M = M
         self.n = n
         self.thickness = thickness
         self.spherical_ab = spherical_ab
         self.chromatic_ab = chromatic_ab
+        self.pos = pos
 
-    def refract_ray(self, ray: Ray) -> tuple[float, float]:
-        return np.matmul(self.M, np.array([ray.tail_position[1], ray.th]))
+    def refract_ray(self, ray: Ray) -> None:
+        # WARNING: Mutates ray
+
+        (ray.tail_position[1], ray.th) = np.matmul(
+            self.M, np.array([ray.tail_position[1], ray.th])
+        )
 
     def get_focal_length(self):
         return -1 / self.M[1, 0]
 
     def __repr__(self):
-        return f"{self.M.flatten() = }"
+        return f"{self.M.flatten() = }, {self.pos = }"
 
 
 # ========= Individual elements
@@ -51,6 +57,13 @@ class FreePropagation(OpticalElement):
         super().__init__(**kwargs)
         self.d = distance
         self.M = np.array([[1, distance], [0, 1]])
+
+    def refract_ray(self, ray: Ray) -> None:
+        super().refract_ray(ray)
+        ray.tail_position[2] += self.d
+
+    def __repr__(self):
+        return str(super().__repr__()) + f", dist: {self.d}"
 
 
 class OpticalFlat(OpticalElement):
